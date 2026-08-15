@@ -5,18 +5,17 @@ import json
 import logging
 import shutil
 from pathlib import Path
-from typing import List, Optional
 
 from langchain_chroma import Chroma
-from langchain_core.embeddings import Embeddings
 from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from src.chunking import Chunk
 
 logger = logging.getLogger(__name__)
 
-_OPEN_CLIENTS: List = []
+_OPEN_CLIENTS: list = []
 
 COLLECTION_NAME = "alura_rag"
 MANIFEST_FILENAME = "manifest.json"
@@ -34,10 +33,15 @@ def _embedding_function(model_name: str) -> Embeddings:
     )
 
 
-def _compute_signature(chunks: List[Chunk]) -> str:
+def _compute_signature(chunks: list[Chunk]) -> str:
     """Hash of all chunk contents and metadata to detect base changes."""
     digest = hashlib.sha256()
-    for chunk in sorted(chunks, key=lambda c: (c.metadata.get("source", ""), c.metadata.get("page", 0), c.metadata.get("chunk_index", 0))):
+
+    def _chave(chunk: Chunk) -> tuple:
+        meta = chunk.metadata
+        return (meta.get("source", ""), meta.get("page", 0), meta.get("chunk_index", 0))
+
+    for chunk in sorted(chunks, key=_chave):
         digest.update(chunk.text.encode("utf-8", errors="replace"))
         digest.update(json.dumps(chunk.metadata, sort_keys=True).encode("utf-8"))
     return digest.hexdigest()
@@ -50,7 +54,7 @@ def _write_manifest(persist_dir: Path, signature: str, n_chunks: int) -> None:
     )
 
 
-def _read_manifest(persist_dir: Path) -> Optional[dict]:
+def _read_manifest(persist_dir: Path) -> dict | None:
     manifest_path = persist_dir / MANIFEST_FILENAME
     if not manifest_path.exists():
         return None
@@ -78,10 +82,10 @@ def _chunk_id(chunk: Chunk) -> str:
 
 
 def build_vector_store(
-    chunks: List[Chunk],
+    chunks: list[Chunk],
     persist_dir: str | Path = "data/chromadb",
     collection_name: str = COLLECTION_NAME,
-    embedding_function: Optional[Embeddings] = None,
+    embedding_function: Embeddings | None = None,
 ) -> Chroma:
     """Build the vector store from chunks, reusing it when unchanged.
 
@@ -127,7 +131,7 @@ def build_vector_store(
 def _open_store(
     persist_dir: Path,
     collection_name: str,
-    embedding_function: Optional[Embeddings],
+    embedding_function: Embeddings | None,
 ) -> Chroma:
     if embedding_function is None:
         from src import config
@@ -148,7 +152,7 @@ def _open_store(
 def load_vector_store(
     persist_dir: str | Path = "data/chromadb",
     collection_name: str = COLLECTION_NAME,
-    embedding_function: Optional[Embeddings] = None,
+    embedding_function: Embeddings | None = None,
 ) -> Chroma:
     """Open an existing vector store without reindexing."""
     persist = Path(persist_dir)

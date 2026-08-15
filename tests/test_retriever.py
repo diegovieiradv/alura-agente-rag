@@ -1,7 +1,8 @@
+from conftest import TokenEmbedding
+
 from src.chunking import Chunk
 from src.retriever import Retriever
 from src.vector_store import build_vector_store
-from conftest import TokenEmbedding
 
 
 def _store(tmp_path, chunks):

@@ -49,7 +49,5 @@ def test_paginas_diferentes_nao_se_misturam():
     paginas_usadas = {c.metadata["page"] for c in chunks}
     assert paginas_usadas == {1, 2}
 
-    sem_mistura = all(
-        ("apenas pagina" in c.text) == (c.metadata["page"] == 1) for c in chunks
-    )
+    sem_mistura = all(("apenas pagina" in c.text) == (c.metadata["page"] == 1) for c in chunks)
     assert sem_mistura

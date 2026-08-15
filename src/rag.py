@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import List, Optional, Protocol
+from typing import Protocol
 
 from src.retriever import RetrievedChunk, Retriever
 
@@ -60,8 +60,8 @@ def _excerpt(text: str, limit: int = EXCERPT_LIMIT) -> str:
 class Answer:
     question: str
     response: str
-    sources: List[Source] = field(default_factory=list)
-    evidence: List[RetrievedChunk] = field(default_factory=list)
+    sources: list[Source] = field(default_factory=list)
+    evidence: list[RetrievedChunk] = field(default_factory=list)
     found: bool = False
 
     @property
@@ -75,7 +75,7 @@ class Answer:
         return f"{self.response}\n\n{block}"
 
 
-def format_sources_block(sources: List[Source]) -> str:
+def format_sources_block(sources: list[Source]) -> str:
     """Render provenance as text, only from real retrieved evidence."""
     if not sources:
         return ""
@@ -95,7 +95,7 @@ class RAGEngine:
         self._retriever = retriever
         self._llm = llm
 
-    def _build_user_prompt(self, question: str, evidence: List[RetrievedChunk]) -> str:
+    def _build_user_prompt(self, question: str, evidence: list[RetrievedChunk]) -> str:
         fragmentos = []
         for chunk in evidence:
             origem = chunk.metadata.get("source", "desconhecido")
@@ -108,9 +108,9 @@ class RAGEngine:
             "Responda usando somente o CONTEXTO acima."
         )
 
-    def _extract_sources(self, evidence: List[RetrievedChunk]) -> List[Source]:
+    def _extract_sources(self, evidence: list[RetrievedChunk]) -> list[Source]:
         vistos = set()
-        fontes: List[Source] = []
+        fontes: list[Source] = []
         for chunk in evidence:
             documento = chunk.metadata.get("source")
             pagina = chunk.metadata.get("page")

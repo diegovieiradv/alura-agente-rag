@@ -1,3 +1,4 @@
+import pytest
 from langchain_core.embeddings import FakeEmbeddings
 
 from src.chunking import Chunk
@@ -51,18 +52,10 @@ def test_metadados_preservados(tmp_path):
 
 
 def test_sem_chunks_levanta_erro(tmp_path):
-    try:
+    with pytest.raises(VectorStoreError, match="nenhum chunk"):
         build_vector_store([], tmp_path, embedding_function=FakeEmbeddings(size=8))
-    except VectorStoreError as exc:
-        assert "nenhum chunk" in str(exc)
-    else:
-        raise AssertionError("deveria levantar VectorStoreError")
 
 
 def test_carregar_base_inexistente_levanta_erro(tmp_path):
-    try:
+    with pytest.raises(VectorStoreError, match="inexistente"):
         load_vector_store(tmp_path / "inexistente", embedding_function=FakeEmbeddings(size=8))
-    except VectorStoreError as exc:
-        assert "inexistente" in str(exc)
-    else:
-        raise AssertionError("deveria levantar VectorStoreError")

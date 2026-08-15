@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -18,10 +17,10 @@ class Chunk:
 
 
 def chunk_pages(
-    pages: List[Page],
+    pages: list[Page],
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     overlap: int = DEFAULT_CHUNK_OVERLAP,
-) -> List[Chunk]:
+) -> list[Chunk]:
     """Split each page into overlapping chunks, preserving provenance.
 
     A chunk inherits ``source`` and ``page`` from its parent page plus a
@@ -33,7 +32,7 @@ def chunk_pages(
         chunk_overlap=overlap,
         separators=["\n\n", "\n", ". ", " ", ""],
     )
-    chunks: List[Chunk] = []
+    chunks: list[Chunk] = []
     for page in pages:
         for index, part in enumerate(splitter.split_text(page.text)):
             chunks.append(

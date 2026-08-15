@@ -1,5 +1,4 @@
 import math
-import sys
 import zlib
 from pathlib import Path
 
@@ -7,8 +6,6 @@ import pytest
 from langchain_core.embeddings import Embeddings
 from pypdf import PdfWriter
 from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 class TokenEmbedding(Embeddings):

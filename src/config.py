@@ -23,12 +23,10 @@ class Config:
     chroma_dir: str
 
     @classmethod
-    def from_env(cls) -> "Config":
+    def from_env(cls) -> Config:
         return cls(
             groq_api_key=os.getenv("GROQ_API_KEY", ""),
-            embedding_model=os.getenv(
-                "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
-            ),
+            embedding_model=os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"),
             llm_model=os.getenv("LLM_MODEL", "llama-3.3-70b-versatile"),
             chroma_dir=os.getenv("CHROMA_DIR", "data/chromadb"),
         )
@@ -37,7 +35,5 @@ class Config:
 def require_groq_api_key(config: Config) -> str:
     key = config.groq_api_key.strip()
     if not key:
-        raise ConfigError(
-            "GROQ_API_KEY nao configurada. Copie .env.example para .env e preencha a chave."
-        )
+        raise ConfigError("GROQ_API_KEY nao configurada. Copie .env.example para .env e preencha a chave.")
     return key

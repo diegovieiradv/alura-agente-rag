@@ -1,9 +1,11 @@
+import pytest
+from conftest import TokenEmbedding
+
 from src.agent import Agent, AgentResult
 from src.chunking import Chunk
 from src.rag import NO_EVIDENCE_RESPONSE, RAGEngine, RAGError
 from src.retriever import Retriever
 from src.vector_store import build_vector_store
-from conftest import TokenEmbedding
 
 
 class ScriptedLLM:
@@ -111,9 +113,5 @@ def test_erro_do_llm_propaga_ragerror(tmp_path):
 
     agente = _agent(tmp_path, LlmQueimado([]))
 
-    try:
+    with pytest.raises(RAGError, match="api fora do ar"):
         agente.respond("quanto custa o cafe?")
-    except RAGError as exc:
-        assert "api fora do ar" in str(exc)
-    else:
-        raise AssertionError("deveria levantar RAGError")

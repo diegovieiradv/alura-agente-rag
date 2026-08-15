@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
 
 from pypdf import PdfReader
 
@@ -45,7 +44,7 @@ class LoadReport:
     documents: int = 0
     pages: int = 0
     skipped: int = 0
-    errors: List[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
 
     @property
     def ok(self) -> bool:
@@ -56,7 +55,7 @@ def _strip(text: str) -> str:
     return " ".join(text.split())
 
 
-def _load_pdf(path: Path, report: LoadReport, pages: List[Page]) -> None:
+def _load_pdf(path: Path, report: LoadReport, pages: list[Page]) -> None:
     try:
         reader = PdfReader(str(path))
         total = len(reader.pages)
@@ -68,13 +67,13 @@ def _load_pdf(path: Path, report: LoadReport, pages: List[Page]) -> None:
         report.errors.append(f"{path.name}: erro ao ler PDF ({exc})")
 
 
-def _load_text(path: Path, pages: List[Page]) -> None:
+def _load_text(path: Path, pages: list[Page]) -> None:
     text = _strip(path.read_text(encoding="utf-8", errors="replace"))
     if text:
         pages.append(Page(text=text, source=path.name, page=1, total_pages=1))
 
 
-def load_documents(directory: str | Path) -> tuple[List[Page], LoadReport]:
+def load_documents(directory: str | Path) -> tuple[list[Page], LoadReport]:
     """Load every supported document under ``directory``.
 
     Invalid or corrupt files are skipped individually, recorded in the
@@ -86,7 +85,7 @@ def load_documents(directory: str | Path) -> tuple[List[Page], LoadReport]:
     if not root.exists() or not root.is_dir():
         raise DocumentLoaderError(f"diretorio de documentos nao encontrado: {root}")
 
-    pages: List[Page] = []
+    pages: list[Page] = []
     report = LoadReport()
 
     for path in sorted(root.rglob("*")):

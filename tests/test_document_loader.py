@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pytest
 
 from src.document_loader import DocumentLoaderError, load_documents
@@ -44,7 +42,7 @@ def test_pdf_corrompido_nao_aborta_carga(tmp_path):
 
 def test_extensoes_nao_suportadas_ignoradas(tmp_path):
     (tmp_path / "imagem.png").write_bytes(b"\x89PNG\r\n")
-    pages, report = load_documents(tmp_path)
+    _, report = load_documents(tmp_path)
 
     assert report.pages == 0
     assert report.skipped == 1

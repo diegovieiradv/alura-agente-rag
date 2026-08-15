@@ -34,8 +34,9 @@ def initialize(cfg: config.Config):
     chunks = chunk_pages(pages)
     store = build_vector_store(chunks, persist_dir=cfg.chroma_dir)
     retriever = Retriever(store)
-    rag = RAGEngine(retriever, GroqClient(cfg))
-    return Agent(rag, GroqClient(cfg)), len(chunks), report
+    llm = GroqClient(cfg)
+    rag = RAGEngine(retriever, llm)
+    return Agent(rag, llm), len(chunks), report
 
 
 def bootstrap() -> tuple[Agent, int, "object", config.Config]:
@@ -72,8 +73,7 @@ def main() -> None:
 
     st.title("Agente RAG")
     st.caption(
-        "Assistente que responde perguntas em linguagem natural usando"
-        " exclusivamente a base de conhecimento."
+        "Assistente que responde perguntas em linguagem natural usando exclusivamente a base de conhecimento."
     )
 
     with st.sidebar:
@@ -105,22 +105,17 @@ def main() -> None:
 
     with st.chat_message("assistant"):
         placeholder = st.empty()
-        with placeholder.container():
-            with st.spinner("Consultando a base de conhecimento..."):
-                try:
-                    resultado = agente.respond(pergunta)
-                except Exception as exc:
-                    st.error(f"Ocorreu um erro ao responder. Detalhes: {exc}")
-                    st.session_state.messages.append(
-                        {"role": "assistant", "content": f"Erro: {exc}"}
-                    )
-                    st.stop()
-                st.markdown(resultado.response)
-                render_fontes(resultado)
+        with placeholder.container(), st.spinner("Consultando a base de conhecimento..."):
+            try:
+                resultado = agente.respond(pergunta)
+            except Exception as exc:
+                st.error(f"Ocorreu um erro ao responder. Detalhes: {exc}")
+                st.session_state.messages.append({"role": "assistant", "content": f"Erro: {exc}"})
+                st.stop()
+            st.markdown(resultado.response)
+            render_fontes(resultado)
 
-    st.session_state.messages.append(
-        {"role": "assistant", "content": resultado.response}
-    )
+    st.session_state.messages.append({"role": "assistant", "content": resultado.response})
 
 
 if __name__ == "__main__":

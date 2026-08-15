@@ -4,7 +4,6 @@ import json
 import logging
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional
 
 from src.rag import LLMClient, RAGEngine, RAGError, Source
 
@@ -34,7 +33,7 @@ class AgentResult:
 
     question: str
     response: str
-    sources: List[Source] = field(default_factory=list)
+    sources: list[Source] = field(default_factory=list)
     found: bool = False
     conversational: bool = False
 
@@ -54,10 +53,7 @@ class Agent:
         }
 
     def _decide_action(self, question: str) -> dict:
-        prompt = (
-            f'Usuario perguntou: "{question}"\n\n'
-            "Decida a acao correspondente e retorne o JSON pedido."
-        )
+        prompt = f'Usuario perguntou: "{question}"\n\nDecida a acao correspondente e retorne o JSON pedido.'
         try:
             raw = self._llm.complete(AGENT_SYSTEM_PROMPT, prompt)
         except Exception as exc:
@@ -88,10 +84,7 @@ class Agent:
                 conversational=True,
             )
 
-        try:
-            answer = self._rag.answer(question)
-        except RAGError:
-            raise
+        answer = self._rag.answer(question)
         return AgentResult(
             question=question,
             response=answer.response,

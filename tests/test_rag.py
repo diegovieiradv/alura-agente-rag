@@ -1,14 +1,14 @@
+import pytest
+from conftest import TokenEmbedding
+
+from src.chunking import Chunk
 from src.rag import (
     NO_EVIDENCE_RESPONSE,
+    SYSTEM_PROMPT,
     RAGEngine,
     RAGError,
-    Source,
-    SYSTEM_PROMPT,
 )
-from src.retriever import RetrievedChunk
-from conftest import TokenEmbedding
 from src.vector_store import build_vector_store
-from src.chunking import Chunk
 
 
 class FakeLLM:
@@ -88,24 +88,16 @@ def test_falha_do_llm_vira_ragerror(tmp_path):
     llm = FakeLLM(erro=RuntimeError("quota excedida"))
     engine = _engine(tmp_path, llm)
 
-    try:
+    with pytest.raises(RAGError, match="quota excedida"):
         engine.answer("quanto custa o cafe?")
-    except RAGError as exc:
-        assert "quota excedida" in str(exc)
-    else:
-        raise AssertionError("deveria levantar RAGError")
 
 
 def test_resposta_vazia_vira_ragerror(tmp_path):
     llm = FakeLLM(resposta="")
     engine = _engine(tmp_path, llm)
 
-    try:
+    with pytest.raises(RAGError, match="vazia"):
         engine.answer("quanto custa o cafe?")
-    except RAGError as exc:
-        assert "vazia" in str(exc)
-    else:
-        raise AssertionError("deveria levantar RAGError")
 
 
 def test_bloco_de_fontes_aparece_na_resposta(tmp_path):

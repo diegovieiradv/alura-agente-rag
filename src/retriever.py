@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import List, Optional
 
 from langchain_chroma import Chroma
 from langchain_core.embeddings import Embeddings
@@ -46,8 +45,8 @@ class Retriever:
         collection_name: str = "alura_rag",
         k: int = DEFAULT_K,
         min_relevance: float = DEFAULT_MIN_RELEVANCE,
-        embedding_function: Optional[Embeddings] = None,
-    ) -> "Retriever":
+        embedding_function: Embeddings | None = None,
+    ) -> Retriever:
         return cls(
             load_vector_store(
                 persist_dir,
@@ -58,12 +57,12 @@ class Retriever:
             min_relevance=min_relevance,
         )
 
-    def retrieve(self, query: str) -> List[RetrievedChunk]:
+    def retrieve(self, query: str) -> list[RetrievedChunk]:
         query = query.strip()
         if not query:
             return []
         results = self._store.similarity_search_with_relevance_scores(query, k=self.k)
-        evidence: List[RetrievedChunk] = []
+        evidence: list[RetrievedChunk] = []
         for doc, score in results:
             relevance = float(score)
             if relevance < self.min_relevance:
