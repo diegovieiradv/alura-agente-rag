@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -19,8 +20,30 @@ from src.vector_store import build_vector_store
 logging.basicConfig(level=logging.INFO)
 
 DOCUMENTOS_DIR = "documentos"
+VARIAVEIS_SUPORTADAS = ("GROQ_API_KEY", "EMBEDDING_MODEL", "LLM_MODEL", "CHROMA_DIR")
 
 st.set_page_config(page_title="Agente RAG", page_icon=":books:")
+
+
+def carregar_segredos_do_streamlit() -> None:
+    """Torna Secrets do Streamlit Cloud disponíveis como variáveis de ambiente.
+
+    Permite configurar a aplicação no deploy pelo painel de Secrets, sem
+    hardcode e sem depender de um arquivo .env na nuvem.
+    """
+    try:
+        segredos = st.secrets
+    except Exception:
+        return
+    for chave in VARIAVEIS_SUPORTADAS:
+        if chave in os.environ:
+            continue
+        try:
+            valor = segredos.get(chave)
+        except Exception:
+            valor = None
+        if valor:
+            os.environ[chave] = str(valor)
 
 
 @st.cache_resource(show_spinner="Carregando a base de conhecimento...")
@@ -61,6 +84,7 @@ def render_fontes(result) -> None:
 
 
 def main() -> None:
+    carregar_segredos_do_streamlit()
     try:
         agente, n_chunks, report, cfg = bootstrap()
     except ConfigError as exc:

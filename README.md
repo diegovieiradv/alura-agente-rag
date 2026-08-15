@@ -224,16 +224,38 @@ Fontes: manual.pdf (página 3)
 A aplicação está preparada para execução na nuvem com as configurações via
 variáveis de ambiente.
 
-- **Streamlit Community Cloud**: opção documentada e prevista para esta
-  entrega. O deploy é feito conectando o repositório ao serviço e
-  configurando as variáveis de ambiente `GROQ_API_KEY`, `EMBEDDING_MODEL`,
-  `LLM_MODEL` e `CHROMA_DIR` no painel do serviço.
-- **Oracle Cloud Infrastructure (OCI)**: mencionado na descrição original do
-  Challenge; a instalação por OCI pode ser avaliada separadamente, mas ainda
-  **não foi implementada** neste projeto.
+### Streamlit Community Cloud (opção prevista para esta entrega)
 
-> Nenhum deploy foi realizado até o momento. A URL pública será documentada
-> aqui somente depois de o deploy ser executado e verificado.
+1. Publique o repositório no GitHub (todos os arquivos necessários já estão
+   versionados: `app.py`, `requirements.txt`, `.streamlit/config.toml` e a
+   pasta `documentos/` com a base).
+2. No painel do [Streamlit Community Cloud](https://streamlit.io/cloud),
+   conecte o repositório, informe `app.py` como arquivo de entrada e defina o
+   Python version (3.13).
+3. Em **Settings → Secrets**, configure as variáveis:
+
+```ini
+GROQ_API_KEY=sua_chave
+EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+LLM_MODEL=llama-3.3-70b-versatile
+CHROMA_DIR=/tmp/chromadb
+```
+
+   O app lê Secrets do Streamlit como variáveis de ambiente
+   (`carregar_segredos_do_streamlit()`), então não é preciso nenhum arquivo
+   `.env` no deploy. Em plataformas que expõem variáveis de ambiente
+   diretamente, basta configurá-las no painel.
+
+> **Nenhum deploy foi realizado até o momento.** A URL pública será
+> documentada aqui somente depois de o deploy ser executado e verificado.
+
+### Oracle Cloud Infrastructure (OCI)
+
+A descrição original do Challenge menciona OCI. Isso **ainda não foi
+implementado** — avaliar separadamente. Em uma possível execução OCI, a
+aplicação poderia rodar em um Compute Instance com o mesmo `requirements.txt`,
+usando Gunicorn/`streamlit run` atrás de um proxy reverso; essa integração será
+documentada se for adotada.
 
 ## Possíveis melhorias
 
