@@ -138,6 +138,7 @@ def _open_store(
         collection_name=collection_name,
         embedding_function=embedding_function,
         persist_directory=str(persist_dir),
+        collection_metadata={"hnsw:space": "cosine"},
     )
     if hasattr(store, "_client"):
         _OPEN_CLIENTS.append(store._client)

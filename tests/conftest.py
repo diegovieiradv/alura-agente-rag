@@ -1,11 +1,33 @@
+import math
 import sys
 from pathlib import Path
 
 import pytest
+from langchain_core.embeddings import Embeddings
 from pypdf import PdfWriter
 from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+
+class TokenEmbedding(Embeddings):
+    """Deterministic bag-of-tokens embedding so tests can assert semantics."""
+
+    def __init__(self, size: int = 32):
+        self.size = size
+
+    def _vec(self, text: str) -> list:
+        vector = [0.0] * self.size
+        for token in text.lower().split():
+            vector[hash(token) % self.size] += 1.0
+        norm = math.sqrt(sum(x * x for x in vector)) or 1.0
+        return [x / norm for x in vector]
+
+    def embed_documents(self, texts):
+        return [self._vec(t) for t in texts]
+
+    def embed_query(self, text):
+        return self._vec(text)
 
 
 @pytest.fixture()
