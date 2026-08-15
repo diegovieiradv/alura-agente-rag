@@ -1,0 +1,12 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+data/
+models/
+.streamlit/secrets.toml
+.DS_Store
+Thumbs.db
