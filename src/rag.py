@@ -40,6 +40,20 @@ NO_EVIDENCE_RESPONSE = (
 class Source:
     document: str
     page: int
+    excerpt: str = ""
+
+    def to_dict(self) -> dict:
+        return {"document": self.document, "page": self.page, "excerpt": self.excerpt}
+
+
+EXCERPT_LIMIT = 160
+
+
+def _excerpt(text: str, limit: int = EXCERPT_LIMIT) -> str:
+    compacto = " ".join(text.split())
+    if len(compacto) <= limit:
+        return compacto
+    return compacto[:limit].rstrip() + "..."
 
 
 @dataclass
@@ -49,6 +63,29 @@ class Answer:
     sources: List[Source] = field(default_factory=list)
     evidence: List[RetrievedChunk] = field(default_factory=list)
     found: bool = False
+
+    @property
+    def display_response(self) -> str:
+        """Answer with the source block appended when there is evidence."""
+        if not self.found:
+            return self.response
+        block = format_sources_block(self.sources)
+        if not block:
+            return self.response
+        return f"{self.response}\n\n{block}"
+
+
+def format_sources_block(sources: List[Source]) -> str:
+    """Render provenance as text, only from real retrieved evidence."""
+    if not sources:
+        return ""
+    itens = []
+    for fonte in sources:
+        parte = f"{fonte.document} (página {fonte.page})"
+        if fonte.excerpt:
+            parte += f' — trecho: "{fonte.excerpt}"'
+        itens.append(parte)
+    return "Fontes: " + "; ".join(itens)
 
 
 class RAGEngine:
@@ -75,11 +112,19 @@ class RAGEngine:
         vistos = set()
         fontes: List[Source] = []
         for chunk in evidence:
-            chave = (chunk.metadata.get("source"), chunk.metadata.get("page"))
+            documento = chunk.metadata.get("source")
+            pagina = chunk.metadata.get("page")
+            chave = (documento, pagina)
             if chave in vistos:
                 continue
             vistos.add(chave)
-            fontes.append(Source(document=chave[0], page=int(chave[1])))
+            fontes.append(
+                Source(
+                    document=documento,
+                    page=int(pagina),
+                    excerpt=_excerpt(chunk.text),
+                )
+            )
         return fontes
 
     def answer(self, question: str) -> Answer:

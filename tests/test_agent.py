@@ -1,6 +1,6 @@
 from src.agent import Agent, AgentResult
 from src.chunking import Chunk
-from src.rag import NO_EVIDENCE_RESPONSE, RAGEngine, RAGError, Source
+from src.rag import NO_EVIDENCE_RESPONSE, RAGEngine, RAGError
 from src.retriever import Retriever
 from src.vector_store import build_vector_store
 from conftest import TokenEmbedding
@@ -62,7 +62,9 @@ def test_pergunta_de_dominio_usa_ferramenta_consultar_base(tmp_path):
     assert not resultado.conversational
     assert resultado.found
     assert resultado.response == "O cafe expresso custa dez reais."
-    assert resultado.sources == [Source(document="cardapio.pdf", page=1)]
+    assert len(resultado.sources) == 1
+    assert resultado.sources[0].document == "cardapio.pdf"
+    assert resultado.sources[0].page == 1
     assert llm.calls == 2
 
 

@@ -52,7 +52,10 @@ def test_responde_usando_contexto_e_fontes(tmp_path):
 
     assert resposta.found
     assert resposta.response == "O cafe custa dez reais."
-    assert resposta.sources == [Source(document="cardapio.pdf", page=1)]
+    assert len(resposta.sources) == 1
+    assert resposta.sources[0].document == "cardapio.pdf"
+    assert resposta.sources[0].page == 1
+    assert resposta.sources[0].excerpt.startswith("O cafe expresso custa dez reais")
     system, user = llm.calls[0]
     assert "cafe expresso custa dez reais" in user
     assert SYSTEM_PROMPT in system
@@ -103,3 +106,33 @@ def test_resposta_vazia_vira_ragerror(tmp_path):
         assert "vazia" in str(exc)
     else:
         raise AssertionError("deveria levantar RAGError")
+
+
+def test_bloco_de_fontes_aparece_na_resposta(tmp_path):
+    llm = FakeLLM("O cafe custa dez reais.")
+    engine = _engine(tmp_path, llm)
+
+    resposta = engine.answer("quanto custa o cafe?")
+
+    assert "cardapio.pdf (página 1)" in resposta.display_response
+    assert "Fontes:" in resposta.display_response
+
+
+def test_fonte_inclui_excerto_real(tmp_path):
+    llm = FakeLLM("Resposta.")
+    engine = _engine(tmp_path, llm)
+
+    resposta = engine.answer("quanto custa o cafe?")
+
+    assert resposta.sources[0].excerpt.startswith("O cafe expresso custa dez reais")
+    assert len(resposta.sources[0].excerpt) <= 160
+
+
+def test_sem_evidencia_bloco_de_fontes_vazio(tmp_path):
+    llm = FakeLLM()
+    engine = _engine(tmp_path, llm, min_relevance=0.9)
+
+    resposta = engine.answer("receita de bolo de chocolate")
+
+    assert resposta.display_response == resposta.response
+    assert "Fontes:" not in resposta.display_response
