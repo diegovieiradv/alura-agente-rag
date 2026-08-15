@@ -75,7 +75,7 @@ src/config.py           Configuração segura por variáveis de ambiente
 - Python 3.13
 - LangChain (core, text-splitters, chroma, huggingface)
 - ChromaDB (banco vetorial)
-- sentence-transformers (embeddings Hugging Face — `all-MiniLM-L6-v2`)
+- sentence-transformers (embeddings Hugging Face — `paraphrase-multilingual-MiniLM-L12-v2`, suporte a português)
 - Groq API (modelo Llama)
 - pypdf (extração de PDF)
 - Streamlit (interface web)
@@ -146,7 +146,7 @@ GROQ_API_KEY=sua_chave_aqui
 | Variável        | Obrigatória | Padrão                                | Descrição                          |
 | --------------- | ----------- | -------------------------------------- | ---------------------------------- |
 | `GROQ_API_KEY`  | Sim         | —                                      | Chave da API Groq (sem segredos no código) |
-| `EMBEDDING_MODEL` | Não      | `sentence-transformers/all-MiniLM-L6-v2` | Modelo de embeddings Hugging Face |
+| `EMBEDDING_MODEL` | Não      | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | Modelo de embeddings Hugging Face (suporte a português) |
 | `LLM_MODEL`     | Não         | `llama-3.3-70b-versatile`              | Modelo de linguagem da Groq        |
 | `CHROMA_DIR`    | Não         | `data/chromadb`                        | Diretório persistente do banco vetorial |
 
@@ -236,7 +236,7 @@ variáveis de ambiente.
 
 ```ini
 GROQ_API_KEY=sua_chave
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+EMBEDDING_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 LLM_MODEL=llama-3.3-70b-versatile
 CHROMA_DIR=/tmp/chromadb
 ```

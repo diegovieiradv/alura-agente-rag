@@ -26,7 +26,9 @@ class Config:
     def from_env(cls) -> Config:
         return cls(
             groq_api_key=os.getenv("GROQ_API_KEY", ""),
-            embedding_model=os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"),
+            embedding_model=os.getenv(
+                "EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+            ),
             llm_model=os.getenv("LLM_MODEL", "llama-3.3-70b-versatile"),
             chroma_dir=os.getenv("CHROMA_DIR", "data/chromadb"),
         )
