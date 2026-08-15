@@ -1,5 +1,6 @@
 import math
 import sys
+import zlib
 from pathlib import Path
 
 import pytest
@@ -19,7 +20,7 @@ class TokenEmbedding(Embeddings):
     def _vec(self, text: str) -> list:
         vector = [0.0] * self.size
         for token in text.lower().split():
-            vector[hash(token) % self.size] += 1.0
+            vector[zlib.crc32(token.encode()) % self.size] += 1.0
         norm = math.sqrt(sum(x * x for x in vector)) or 1.0
         return [x / norm for x in vector]
 
