@@ -15,10 +15,12 @@ AGENT_SYSTEM_PROMPT = (
     "- consultar_base(pergunta): consulta a base de conhecimento para\n"
     "  responder perguntas sobre os documentos disponíveis.\n"
     "Regras de decisao:\n"
-    "1. Se a pergunta for um cumprimento, agradecimento ou assunto geral sem\n"
-    "   relação com a base de conhecimento, responda diretamente de forma\n"
-    "   breve e educada.\n"
-    "2. Caso contrario, escolha a ferramenta consultar_base.\n"
+    "1. Responda diretamente, de forma breve e educada, SOMENTE se a pergunta\n"
+    "   for um cumprimento, despedida ou agradecimento (ex.: 'oi', 'bom dia',\n"
+    "   'obrigado'). Nunca invente fatos, previsoes ou dados em respostas\n"
+    "   diretas.\n"
+    "2. Para qualquer outra pergunta (mesmo que pareca ser de assunto geral),\n"
+    "   escolha a ferramenta consultar_base.\n"
     "Responda SOMENTE em JSON, com um destes formatos:\n"
     '{"tool": "consultar_base"}\n'
     '{"tool": "none", "reply": "sua resposta direta aqui"}'

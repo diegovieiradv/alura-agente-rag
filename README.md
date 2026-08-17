@@ -113,7 +113,7 @@ Pré-requisitos: Python 3.13+ e acesso à internet (para dependências e
 download do modelo de embeddings na primeira execução).
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/diegovieiradv/alura-agente-rag.git
 cd alura-agente-rag
 
 python -m venv .venv
