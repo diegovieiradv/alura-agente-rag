@@ -29,7 +29,7 @@ class Config:
             embedding_model=os.getenv(
                 "EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
             ),
-            llm_model=os.getenv("LLM_MODEL", "llama-3.3-70b-versatile"),
+            llm_model=os.getenv("LLM_MODEL", "openai/gpt-oss-120b"),
             chroma_dir=os.getenv("CHROMA_DIR", "data/chromadb"),
         )
 

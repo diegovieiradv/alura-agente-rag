@@ -10,7 +10,7 @@ def test_valores_padrao_quando_env_ausente(monkeypatch):
     cfg = Config.from_env()
 
     assert cfg.embedding_model == "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-    assert cfg.llm_model == "llama-3.3-70b-versatile"
+    assert cfg.llm_model == "openai/gpt-oss-120b"
     assert cfg.chroma_dir == "data/chromadb"
     assert cfg.groq_api_key == ""
 

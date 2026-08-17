@@ -147,7 +147,7 @@ GROQ_API_KEY=sua_chave_aqui
 | --------------- | ----------- | -------------------------------------- | ---------------------------------- |
 | `GROQ_API_KEY`  | Sim         | —                                      | Chave da API Groq (sem segredos no código) |
 | `EMBEDDING_MODEL` | Não      | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | Modelo de embeddings Hugging Face (suporte a português) |
-| `LLM_MODEL`     | Não         | `llama-3.3-70b-versatile`              | Modelo de linguagem da Groq        |
+| `LLM_MODEL`     | Não         | `openai/gpt-oss-120b`                  | Modelo de linguagem da Groq        |
 | `CHROMA_DIR`    | Não         | `data/chromadb`                        | Diretório persistente do banco vetorial |
 
 O arquivo `.env` nunca é versionado (protegido pelo `.gitignore`).
@@ -237,7 +237,7 @@ variáveis de ambiente.
 ```ini
 GROQ_API_KEY=sua_chave
 EMBEDDING_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-LLM_MODEL=llama-3.3-70b-versatile
+LLM_MODEL=openai/gpt-oss-120b
 CHROMA_DIR=/tmp/chromadb
 ```
 
