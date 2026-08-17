@@ -38,4 +38,9 @@ def require_groq_api_key(config: Config) -> str:
     key = config.groq_api_key.strip().strip('"').strip("'")
     if not key:
         raise ConfigError("GROQ_API_KEY nao configurada. Copie .env.example para .env e preencha a chave.")
+    if len(key) < 40:
+        raise ConfigError(
+            f"GROQ_API_KEY invalida: valor tem apenas {len(key)} caracteres. "
+            "Chaves da Groq possuem ~57 caracteres. Confira o valor salvo no Streamlit Secrets."
+        )
     return key

@@ -76,8 +76,10 @@ def require_groq_api_key(cfg: config.Config) -> str:
 def mascarar_chave(chave: str) -> str:
     """Exibe apenas prefixo/sufixo da chave para diagnostico (sem expor o valor)."""
     chave = chave.strip().strip('"').strip("'")
-    if len(chave) <= 8:
-        return "(chave muito curta)"
+    if not chave:
+        return "(nao configurada)"
+    if len(chave) < 40:
+        return f"(chave muito curta: len {len(chave)})"
     return f"{chave[:4]}...{chave[-4:]} (len {len(chave)})"
 
 

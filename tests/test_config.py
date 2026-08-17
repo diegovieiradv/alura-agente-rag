@@ -37,17 +37,34 @@ def test_chave_vazia_levanta_configerror(monkeypatch):
 
 
 def test_chave_presente_retorna_valor(monkeypatch):
-    monkeypatch.setenv("GROQ_API_KEY", "sk-teste")
+    monkeypatch.setenv("GROQ_API_KEY", "gsk_testechavecomquarentaoumaiscaracteres")
 
     cfg = Config.from_env()
 
-    assert require_groq_api_key(cfg) == "sk-teste"
+    assert require_groq_api_key(cfg) == "gsk_testechavecomquarentaoumaiscaracteres"
 
 
-@pytest.mark.parametrize("chave_colada", ['"sk-teste"', "'sk-teste'", "  sk-teste  ", '"sk-teste"  '])
+@pytest.mark.parametrize(
+    "chave_colada",
+    [
+        '"gsk_testechavecomquarentaoumaiscaracteres"',
+        "'gsk_testechavecomquarentaoumaiscaracteres'",
+        "  gsk_testechavecomquarentaoumaiscaracteres  ",
+        '"gsk_testechavecomquarentaoumaiscaracteres"  ',
+    ],
+)
 def test_chave_limpa_aspas_e_espacos(monkeypatch, chave_colada):
     monkeypatch.setenv("GROQ_API_KEY", chave_colada)
 
     cfg = Config.from_env()
 
-    assert require_groq_api_key(cfg) == "sk-teste"
+    assert require_groq_api_key(cfg) == "gsk_testechavecomquarentaoumaiscaracteres"
+
+
+def test_chave_muito_curta_levanta_configerror(monkeypatch):
+    monkeypatch.setenv("GROQ_API_KEY", "sk-curta")
+
+    cfg = Config.from_env()
+
+    with pytest.raises(ConfigError, match="GROQ_API_KEY"):
+        require_groq_api_key(cfg)
