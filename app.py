@@ -73,6 +73,14 @@ def require_groq_api_key(cfg: config.Config) -> str:
     return config.require_groq_api_key(cfg)
 
 
+def mascarar_chave(chave: str) -> str:
+    """Exibe apenas prefixo/sufixo da chave para diagnostico (sem expor o valor)."""
+    chave = chave.strip().strip('"').strip("'")
+    if len(chave) <= 8:
+        return "(chave muito curta)"
+    return f"{chave[:4]}...{chave[-4:]} (len {len(chave)})"
+
+
 def render_fontes(result) -> None:
     if not result.sources:
         return
@@ -109,6 +117,7 @@ def main() -> None:
             f"- Documentos carregados: `{report.documents}`\n"
             f"- Páginas: `{report.pages}`"
         )
+        st.caption(f"GROQ_API_KEY: {mascarar_chave(cfg.groq_api_key)}")
         if report.ok is False and report.errors:
             st.warning("; ".join(report.errors))
 
