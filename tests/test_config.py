@@ -42,3 +42,12 @@ def test_chave_presente_retorna_valor(monkeypatch):
     cfg = Config.from_env()
 
     assert require_groq_api_key(cfg) == "sk-teste"
+
+
+@pytest.mark.parametrize("chave_colada", ['"sk-teste"', "'sk-teste'", "  sk-teste  ", '"sk-teste"  '])
+def test_chave_limpa_aspas_e_espacos(monkeypatch, chave_colada):
+    monkeypatch.setenv("GROQ_API_KEY", chave_colada)
+
+    cfg = Config.from_env()
+
+    assert require_groq_api_key(cfg) == "sk-teste"

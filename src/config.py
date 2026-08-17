@@ -35,7 +35,7 @@ class Config:
 
 
 def require_groq_api_key(config: Config) -> str:
-    key = config.groq_api_key.strip()
+    key = config.groq_api_key.strip().strip('"').strip("'")
     if not key:
         raise ConfigError("GROQ_API_KEY nao configurada. Copie .env.example para .env e preencha a chave.")
     return key
