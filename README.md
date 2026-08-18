@@ -44,7 +44,7 @@ Vetores
 Banco vetorial ChromaDB (persistente)
       ↓ busca semântica
 Evidências com pontuação de relevância
-      ↓ RAG (LLM Groq / Llama)
+      ↓ RAG (LLM Groq)
 Resposta com fontes + regra anti-alucinação
       ↓
 Interface Streamlit (chat)
@@ -52,7 +52,10 @@ Interface Streamlit (chat)
 
 Um **agente** decide a ação adequada para cada pergunta: cumprimentos e
 assuntos gerais são respondidos diretamente; perguntas sobre os documentos
-acionam a ferramenta `consultar_base`, que usa o pipeline RAG.
+acionam a ferramenta `consultar_base`, que usa o pipeline RAG. Para melhorar a
+recuperação em documentos técnicos densos, a pergunta é **expandida em
+termos-chave** (via LLM) e as buscas — pergunta original + query expandida —
+são **fundidas com Reciprocal Rank Fusion (RRF)**.
 
 ## Arquitetura
 
@@ -60,13 +63,13 @@ Por camadas, de forma a manter cada responsabilidade isolada e testável:
 
 ```text
 app.py                  Interface Streamlit (chat web)
-src/agent.py            Agente: escolha de ação e ferramenta consultar_base
+src/agent.py            Agente: escolha de ação, expansão de query e ferramenta consultar_base
 src/rag.py              Pipeline RAG + regra anti-alucinação + fontes
-src/retriever.py        Busca semântica com limiar de relevância
+src/retriever.py        Busca semântica com limiar de relevância + multi-query RRF
 src/vector_store.py     Indexação e persistência no ChromaDB (sem duplicação)
 src/chunking.py         Divisão dos textos em trechos com metadados
 src/document_loader.py  Carregamento de PDF/TXT/MD com validação
-src/llm.py              Cliente Groq (Llama)
+src/llm.py              Cliente Groq
 src/config.py           Configuração segura por variáveis de ambiente
 ```
 
@@ -201,15 +204,30 @@ Tipo de pergunta recomendada para validar o RAG:
 3. **Pergunta completamente fora da base** — deve responder que a informação
    não está disponível na base de conhecimento.
 
-Exemplo:
+Exemplos reais (validados ponta a ponta com a base Santo Pegasus):
 
 ```text
-Usuário: Qual a política de reembolso descrita no manual?
-Agente: Segundo o documento manual.pdf (página 3), reembolsos são solicitados
-em até 30 dias após a compra...
+Usuário: Qual a stack de front-end usada na Santo Pegasus?
+Agente: React 18 (mín. 18.2.0), TypeScript 5 (strict: true), Next.js 14
+(App Router), Vite 5 e Node 20 LTS.
 
-Fontes: manual.pdf (página 3)
+Fontes: Santo_Pegasus_Base_Conhecimento_Completa.pdf (página 7)
+
+Usuário: Como funciona o Pull Request?
+Agente: Processo completo (2 aprovações, CI verde antes do merge) + fonte.
+
+Usuário: Qual o time de futebol campeão mundial?
+Agente: Informação não encontrada na base de conhecimento. (sem inventar)
 ```
+
+## Testes
+
+- **49 testes automatizados** (`pytest`) cobrindo loader, chunking, índice
+  vetorial, retriever, RAG, agente (incluindo expansão de query), config e
+  leitura de secrets para deploy.
+- **Lint/formação**: `ruff check` e `ruff format --check` limpos.
+- **Validação ponta a ponta** com a API Groq real sobre a base Santo Pegasus —
+  detalhes em [docs/AUDITORIA_CHALLENGE.md](docs/AUDITORIA_CHALLENGE.md).
 
 ## Limitações
 
