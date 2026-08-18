@@ -76,7 +76,7 @@ src/config.py           Configuração segura por variáveis de ambiente
 - LangChain (core, text-splitters, chroma, huggingface)
 - ChromaDB (banco vetorial)
 - sentence-transformers (embeddings Hugging Face — `paraphrase-multilingual-MiniLM-L12-v2`, suporte a português)
-- Groq API (modelo Llama)
+- Groq API (modelo openai/gpt-oss-120b)
 - pypdf (extração de PDF)
 - Streamlit (interface web)
 - python-dotenv (variáveis de ambiente)
