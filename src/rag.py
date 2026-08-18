@@ -127,9 +127,10 @@ class RAGEngine:
             )
         return fontes
 
-    def answer(self, question: str) -> Answer:
+    def answer(self, question: str, query: str | None = None) -> Answer:
         question = question.strip()
-        evidence = self._retriever.retrieve(question)
+        queries = [query, question] if query and query.strip() else [question]
+        evidence = self._retriever.retrieve_multi(queries)
         if not evidence:
             return Answer(question=question, response=NO_EVIDENCE_RESPONSE)
 

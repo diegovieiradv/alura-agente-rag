@@ -54,6 +54,7 @@ def test_pergunta_de_dominio_usa_ferramenta_consultar_base(tmp_path):
     llm = ScriptedLLM(
         [
             '{"tool": "consultar_base"}',
+            '{"query": "cafe expresso preco"}',
             "O cafe expresso custa dez reais.",
         ]
     )
@@ -67,11 +68,33 @@ def test_pergunta_de_dominio_usa_ferramenta_consultar_base(tmp_path):
     assert len(resultado.sources) == 1
     assert resultado.sources[0].document == "cardapio.pdf"
     assert resultado.sources[0].page == 1
-    assert llm.calls == 2
+    assert llm.calls == 3
+
+
+def test_consulta_sem_query_usa_pergunta_original(tmp_path):
+    llm = ScriptedLLM(
+        [
+            '{"tool": "consultar_base"}',
+            "resposta nao-json na expansao",
+            "O cafe expresso custa dez reais.",
+        ]
+    )
+    agente = _agent(tmp_path, llm)
+
+    resultado = agente.respond("quanto custa o cafe?")
+
+    assert resultado.found
+    assert resultado.response == "O cafe expresso custa dez reais."
+    assert llm.calls == 3
 
 
 def test_pergunta_fora_da_base_via_agente(tmp_path):
-    llm = ScriptedLLM(['{"tool": "consultar_base"}'])
+    llm = ScriptedLLM(
+        [
+            '{"tool": "consultar_base"}',
+            '{"query": "bolo morango receita"}',
+        ]
+    )
     agente = _agent(tmp_path, llm)
 
     resultado = agente.respond("receita de bolo de morango")
@@ -85,6 +108,7 @@ def test_decisao_sem_json_assume_consulta_a_base(tmp_path):
     llm = ScriptedLLM(
         [
             "resposta sem json nenhum",
+            '{"query": "cafe expresso"}',
             "Resposta baseada na base.",
         ]
     )

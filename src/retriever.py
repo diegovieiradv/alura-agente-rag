@@ -28,6 +28,8 @@ class Retriever:
     only grounded on genuinely related content.
     """
 
+    RRF_K = 60
+
     def __init__(
         self,
         store: Chroma,
@@ -76,6 +78,27 @@ class Retriever:
             )
         evidence.sort(key=lambda c: c.relevance, reverse=True)
         return evidence
+
+    def retrieve_multi(self, queries: list[str]) -> list[RetrievedChunk]:
+        """Fuse results of several queries with Reciprocal Rank Fusion.
+
+        Combina perguntas em linguagem natural com queries expandidas em
+        termos-chave, o que torna a recuperação robusta para documentos
+        técnicos densos.
+        """
+        queries = [q.strip() for q in queries if q and q.strip()]
+        if not queries:
+            return []
+
+        texto_chunk: dict[str, RetrievedChunk] = {}
+        rrf: dict[str, float] = {}
+        for query in queries:
+            for rank, chunk in enumerate(self.retrieve(query)):
+                texto_chunk.setdefault(chunk.text, chunk)
+                rrf[chunk.text] = rrf.get(chunk.text, 0.0) + 1.0 / (self.RRF_K + rank)
+
+        fundidos = sorted(rrf.items(), key=lambda item: item[1], reverse=True)
+        return [texto_chunk[texto] for texto, _ in fundidos]
 
     def has_evidence(self, query: str) -> bool:
         return bool(self.retrieve(query))

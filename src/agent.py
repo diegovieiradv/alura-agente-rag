@@ -26,6 +26,16 @@ AGENT_SYSTEM_PROMPT = (
     '{"tool": "none", "reply": "sua resposta direta aqui"}'
 )
 
+QUERY_EXPANSION_PROMPT = (
+    "Você gera termos de busca para um retriever de documentos técnicos. "
+    "Dada a pergunta do usuário, responda SOMENTE com JSON no formato "
+    '{"query": "termos de busca com 3 a 6 termos técnicos concretos, '
+    'separados por virgula"}. Use nomes reais de tecnologias, frameworks, '
+    "praticas ou processos relacionados ao tema (ex.: react, typescript, "
+    "pull request, core web vitals, spring boot). NAO inclua o nome da "
+    "empresa nem palavras genéricas."
+)
+
 DIRECT_FALLBACK_REPLY = "Desculpe, não entendi a pergunta. Pode reformular?"
 
 
@@ -72,6 +82,23 @@ class Agent:
             return {"tool": "consultar_base"}
         return data if isinstance(data, dict) else {"tool": "consultar_base"}
 
+    def _expand_query(self, question: str) -> str | None:
+        """Gera termos-chave para a busca semantica, com fallback seguro."""
+        try:
+            raw = self._llm.complete(QUERY_EXPANSION_PROMPT, f'Pergunta: "{question}"')
+        except Exception as exc:
+            logger.warning("falha na expansao de query (%s); usando pergunta original", exc)
+            return None
+        match = re.search(r"\{.*\}", raw or "", re.DOTALL)
+        if not match:
+            return None
+        try:
+            data = json.loads(match.group(0))
+        except json.JSONDecodeError:
+            return None
+        query = data.get("query")
+        return query.strip() if isinstance(query, str) and query.strip() else None
+
     def respond(self, question: str) -> AgentResult:
         question = question.strip()
         if not question:
@@ -86,7 +113,8 @@ class Agent:
                 conversational=True,
             )
 
-        answer = self._rag.answer(question)
+        expanded = self._expand_query(question)
+        answer = self._rag.answer(question, query=expanded)
         return AgentResult(
             question=question,
             response=answer.response,

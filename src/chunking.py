@@ -6,8 +6,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from src.document_loader import Page
 
-DEFAULT_CHUNK_SIZE = 280
-DEFAULT_CHUNK_OVERLAP = 30
+DEFAULT_CHUNK_SIZE = 800
+DEFAULT_CHUNK_OVERLAP = 80
 
 
 @dataclass(frozen=True)
