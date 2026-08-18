@@ -141,6 +141,11 @@ GROQ_API_KEY=sua_chave_aqui
 
 3. Coloque seus documentos na pasta `documentos/` (PDF, TXT ou MD).
 
+> **Base de exemplo:** o repositório já inclui
+> `Santo_Pegasus_Base_Conhecimento_Completa.pdf` (76 páginas de guias de
+> engenharia: Front-end, Back-end, Microsserviços, Onboarding e Incidentes),
+> usada na validação ponta a ponta.
+
 ## Variáveis de ambiente
 
 | Variável        | Obrigatória | Padrão                                | Descrição                          |
@@ -246,8 +251,8 @@ CHROMA_DIR=/tmp/chromadb
    `.env` no deploy. Em plataformas que expõem variáveis de ambiente
    diretamente, basta configurá-las no painel.
 
-> **Nenhum deploy foi realizado até o momento.** A URL pública será
-> documentada aqui somente depois de o deploy ser executado e verificado.
+> **Deploy publicado:** a aplicação está no ar no Streamlit Community Cloud.
+> URL: https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app
 
 ### Oracle Cloud Infrastructure (OCI)
 

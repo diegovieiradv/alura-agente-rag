@@ -6,53 +6,45 @@ validado**, não declarações de intenção.
 
 | Requisito                    | Implementado | Evidência                                                    |
 | ---------------------------- | ------------ | ------------------------------------------------------------ |
-| Agente inteligente           | Sim          | `src/agent.py` — decide a ação por pergunta (conversa ou ferramenta `consultar_base`) e orquestra o uso da base |
+| Agente inteligente           | Sim          | `src/agent.py` — decide a ação por pergunta (conversa ou ferramenta `consultar_base`), expande a pergunta em termos-chave e orquestra o uso da base |
 | Respostas em linguagem natural | Sim        | `src/rag.py` (prompt de sistema) + `src/agent.py` + interface de chat `app.py` |
-| Base de conhecimento própria | Sim          | `documentos/classificador-conteudo-tecnico.txt` (10 exemplos reais) + `src/document_loader.py` (extração, validação, metadados) + `src/chunking.py` |
-| RAG                          | Sim          | `src/vector_store.py` (ChromaDB + embeddings Hugging Face), `src/retriever.py` (busca semântica c/ limiar), `src/rag.py` (pipeline) |
+| Base de conhecimento própria | Sim          | `documentos/Santo_Pegasus_Base_Conhecimento_Completa.pdf` (76 páginas reais: guias Front-end, Back-end, Microsserviços, Onboarding, Incidentes) + `src/document_loader.py` (extração, validação, metadados) + `src/chunking.py` |
+| RAG                          | Sim          | `src/vector_store.py` (ChromaDB + embeddings Hugging Face), `src/retriever.py` (busca semântica + multi-query com Reciprocal Rank Fusion), `src/rag.py` (pipeline) |
 | Regra anti-alucinação        | Sim          | Sem evidência recuperada → resposta clara de ausência (`src/rag.py`); fontes apenas derivadas das evidências; decisão do agente só responde direto para cumprimentos/despedidas |
 | Fontes nas respostas         | Sim          | Documento, página e trecho real recuperado (`Answer.display_response`) |
 | GitHub / documentação        | Sim          | Repositório público `diegovieiradv/alura-agente-rag` com commits evolutivos; `README.md` completo |
-| Deploy                       | **Parcial**  | Preparado (`.streamlit/config.toml`, secrets no `app.py`, runbook no README). **Não publicado** — sem URL |
+| Deploy                       | **Sim**      | Publicado no Streamlit Community Cloud: `alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app` — secrets configurados, app no ar |
 | OCI, se obrigatório          | **Não**      | Não implementado. Avaliação separada documentada no README    |
 
 ## Testes automatizados
 
-- **43 testes passando** (`pytest`).
+- **49 testes passando** (`pytest`).
 - Cobertura por camada: loader, chunking, vetores/índice, retriever, RAG,
-  agente, config, e leitura de secrets para deploy.
+  agente (incluindo expansão de query), config, e leitura de secrets para deploy.
 - Lint/formação: `ruff check` e `ruff format --check` limpos.
 
 ## Validação ponta a ponta (chave Groq real — 17/08/2026)
 
-Fluxo completo executado localmente com a API Groq real:
+Fluxo completo executado com a API Groq real sobre a base
+`Santo_Pegasus_Base_Conhecimento_Completa.pdf` (76 páginas):
 
 | Pergunta                                        | Resultado                          |
 | ----------------------------------------------- | ---------------------------------- |
-| APIs REST com Spring Boot                       | ✅ Backend + fonte                  |
-| Deploys com Docker e Kubernetes                 | ✅ DevOps + fonte                   |
-| Análise de dados com pandas                     | ✅ Dados + fonte                    |
-| Interfaces com React e TypeScript               | ✅ Frontend + fonte                 |
-| Política de reembolso (fora da base)            | ✅ Recusa sem inventar              |
+| Qual o stack de front-end?                      | ✅ React 18, TypeScript 5, Next.js 14, Vite, Node 20 + fonte |
+| Qual framework de backend?                      | ✅ Spring Boot 3+ + fonte           |
+| Como funciona o Pull Request?                   | ✅ Processo completo (2 aprovações, CI verde) + fonte |
+| Política de férias CLT                          | ✅ 30 dias, fracionamento, 1/3, Portal do Colaborador + fonte |
+| Boas práticas de Core Web Vitals                | ✅ LCP/FID/CLS + fonte              |
+| Política de home office/híbrido                 | ✅ Híbrido flexível + fonte         |
 | Previsão do tempo (fora da base)                | ✅ Recusa sem inventar              |
-| "Oi, tudo bem?"                                 | ✅ Resposta conversacional direta   |
+| "Olá, tudo bem?"                                | ✅ Resposta conversacional direta   |
 
-> Durante a validação, o modelo padrão `llama-3.3-70b-versatile` foi
-> descontinuado pela Groq (HTTP 404). O padrão foi atualizado para
-> `openai/gpt-oss-120b` (disponível na conta usada) e a regra de decisão do
-> agente foi ajustada para garantir que perguntas gerais também passem pela
-> base (evitando alucinação em respostas diretas).
+> Para documentos técnicos densos, o chunking foi recalibrado (280 → 800
+> caracteres, overlap 80) e a recuperação passou a combinar a pergunta original
+> com termos-chave expandidos via multi-query + Reciprocal Rank Fusion
+> (`retriever.retrieve_multi`), elevando a precisão da recuperação.
 
 ## Pendências detectadas
 
-1. **Deploy publicado**: a aplicação está preparada e o repositório está
-   público no GitHub, porém a publicação no Streamlit Community Cloud
-   (e/ou OCI) e a URL pública ainda precisam ser executadas e verificadas
-   no painel do Streamlit.
-
-## Conclusão
-
-Todos os requisitos **de implementação** estão atendidos e o fluxo foi
-validado ponta a ponta com chave real. O item **Deploy** depende de
-execução externa (deploy no painel do Streamlit Community Cloud) e fica
-como ação pendente para a entrega final.
+Nenhuma pendência de implementação. Pontos opcionais documentados no README
+(OCI, métricas de avaliação da recuperação, streaming).
