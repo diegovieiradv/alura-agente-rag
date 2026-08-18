@@ -1,0 +1,99 @@
+- generic [ref=e2]:
+  - generic [ref=e6]:
+    - iframe [active] [ref=e7]:
+      - generic [ref=f3e2]:
+        - generic [ref=f3e8]:
+          - heading "Sobre" [level=3] [ref=f3e12]
+          - list [ref=f3e17]:
+            - listitem [ref=f3e18]:
+              - text: "Modelo de linguagem:"
+              - code [ref=f3e19]: openai/gpt-oss-120b
+            - listitem [ref=f3e20]:
+              - text: "Embeddings:"
+              - code [ref=f3e21]: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+            - listitem [ref=f3e22]:
+              - text: "Chunks indexados:"
+              - code [ref=f3e23]: "227"
+            - listitem [ref=f3e24]:
+              - text: "Documentos carregados:"
+              - code [ref=f3e25]: "2"
+            - listitem [ref=f3e26]:
+              - text: "Páginas:"
+              - code [ref=f3e27]: "77"
+          - paragraph [ref=f3e32]: "GROQ_API_KEY: gsk_...JM7T (len 56)"
+        - generic [ref=f3e35]:
+          - banner [ref=f3e36]:
+            - generic [ref=f3e39]:
+              - generic [ref=f3e40]:
+                - button "Fork" [ref=f3e42] [cursor=pointer]
+                - button [ref=f3e46] [cursor=pointer]
+              - button "Main menu" [ref=f3e50] [cursor=pointer]
+          - generic [ref=f3e54]:
+            - generic [ref=f3e56]:
+              - heading "Agente RAG" [level=1] [ref=f3e61]:
+                - text: Agente RAG
+                - generic [ref=f3e62]:
+                  - link "Link to heading":
+                    - /url: "#agente-rag"
+              - paragraph [ref=f3e67]: Assistente que responde perguntas em linguagem natural usando exclusivamente a base de conhecimento.
+              - generic [ref=f3e93]:
+                - generic [ref=f3e94]: face
+                - generic "Chat message from user" [ref=f3e97]:
+                  - paragraph [ref=f3e103]: Qual a stack de front-end usada na Santo Pegasus?
+              - generic [ref=f3e105]:
+                - generic [ref=f3e106]: smart_toy
+                - generic "Chat message from assistant" [ref=f3e109]:
+                  - generic [ref=f3e112]:
+                    - generic [ref=f3e124]:
+                      - paragraph [ref=f3e125]: "A stack de front‑end adotada pela Santo Pegasus, conforme o material interno, inclui:"
+                      - list [ref=f3e126]:
+                        - listitem [ref=f3e127]:
+                          - strong [ref=f3e128]: React
+                          - text: como framework principal de UI.
+                        - listitem [ref=f3e129]:
+                          - strong [ref=f3e130]: TypeScript
+                          - text: para tipagem estática das aplicações.
+                        - listitem [ref=f3e131]:
+                          - strong [ref=f3e132]: Tailwind CSS
+                          - text: (configurado em
+                          - code [ref=f3e133]: tailwind.config.js
+                          - text: com design tokens como cores corporativas, espaçamentos e raios de borda).
+                        - listitem [ref=f3e134]:
+                          - strong [ref=f3e135]: shadcn/ui
+                          - text: – biblioteca de componentes base que é copiada para
+                          - code [ref=f3e136]: components/ui
+                          - text: para total customização.
+                        - listitem [ref=f3e137]:
+                          - strong [ref=f3e138]: React Testing Library (RTL)
+                          - text: para testes de integração de componentes focados no comportamento do usuário.
+                        - listitem [ref=f3e139]:
+                          - strong [ref=f3e140]: Playwright
+                          - text: para testes end‑to‑end (E2E) em fluxos críticos como checkout e login.
+                        - listitem [ref=f3e141]:
+                          - strong [ref=f3e142]: openapi‑typescript
+                          - text: "(ex.:"
+                          - code [ref=f3e143]: npx openapi-typescript …
+                          - text: ) para gerar tipos TypeScript a partir dos contratos OpenAPI do back‑end.
+                      - paragraph [ref=f3e144]: Esses itens compõem o conjunto de tecnologias e ferramentas citadas nos documentos da Santo Pegasus para o desenvolvimento front‑end.
+                    - group [ref=f3e147]:
+                      - generic "keyboard_arrow_right Fontes utilizadas" [ref=f3e148] [cursor=pointer]:
+                        - generic [ref=f3e149]:
+                          - generic [ref=f3e150]: keyboard_arrow_right
+                          - paragraph [ref=f3e154]: Fontes utilizadas
+            - generic [ref=f3e76]:
+              - textbox "Digite sua pergunta sobre os documentos..." [active] [ref=f3e78]
+              - button "Send message" [disabled] [ref=f3e80]
+    - link [ref=e8] [cursor=pointer]:
+      - /url: https://streamlit.io/cloud
+    - link [ref=e16] [cursor=pointer]:
+      - /url: https://share.streamlit.io/user/diegovieiradv
+      - img "App Creator Avatar" [ref=e17]
+  - iframe [ref=e1]:
+    - generic [ref=f1e2]:
+      - generic [ref=f1e11]:
+        - heading [level=1] [ref=f1e12]:
+          - paragraph [ref=f1e13]: Status embed installed correctly
+        - generic [ref=f1e14]: This will be shown if an incident or maintenance is posted on your status page.
+        - link "View latest updates" [ref=f1e16] [cursor=pointer]:
+          - /url: https://www.streamlitstatus.com?utm_source=embed
+      - button [ref=f1e18] [cursor=pointer]

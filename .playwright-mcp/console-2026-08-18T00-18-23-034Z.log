@@ -1,0 +1,22 @@
+[    4269ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/api/v1/app/event/open:0
+[    4707ms] [LOG] INITIAL -> (5, 0, ) -> RUNNING @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/bufferedData-ymD0tp_Q.js:4
+[    4720ms] [WARNING] Unrecognized feature: 'ambient-light-sensor'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'battery'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'document-domain'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'layout-animations'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'legacy-image-formats'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'oversized-images'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'vr'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    4720ms] [WARNING] Unrecognized feature: 'wake-lock'. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/-/build/assets/cn-BZAAGw-p.js:0
+[    5117ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/:0
+[    5176ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/api/v2/user/details:0
+[    9194ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[    9294ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   15595ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/api/v2/user/details:0
+[   23928ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   23973ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   24426ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   26009ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/api/v2/user/details:0
+[   27377ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   27477ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
+[   27515ms] [WARNING] Invalid color passed for textColor in theme.sidebar: "" @ https://alura-agente-rag-x6dyastn7mtrhufbz85quw.streamlit.app/~/+/static/js/utils.KTqwHXHU.js:3
