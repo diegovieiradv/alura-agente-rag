@@ -220,6 +220,16 @@ Usuário: Qual o time de futebol campeão mundial?
 Agente: Informação não encontrada na base de conhecimento. (sem inventar)
 ```
 
+## Capturas de Tela
+
+**Tela inicial — sidebar com informações do modelo e campo de chat:**
+
+![Tela inicial do Agente RAG](docs/images/tela-inicial.png)
+
+**Exemplo de conversa — pergunta sobre front-end com resposta estruturada em tabela:**
+
+![Exemplo de conversa com o Agente RAG](docs/images/exemplo-conversa.png)
+
 ## Testes
 
 - **49 testes automatizados** (`pytest`) cobrindo loader, chunking, índice
